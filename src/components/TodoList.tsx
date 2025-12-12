@@ -2,38 +2,51 @@ import { useState } from "react";
 
 type TodoListProps = {
     listItems: string[]
+    onEdit: (index: number, item: string) => void
 }
 
-function TodoList({ listItems }: TodoListProps) {
+function TodoList({ listItems, onEdit }: TodoListProps) {
+    const [editingIndex, setEditingIndex] = useState<number | null>(null);
     return(
         <>
             <p>List of items: </p>
-            {listItems.map((item,index) => <ListItem key={index} item={item}/>)}
+            {listItems.map((item,index) => 
+                <ListItem key={index} 
+                    index={index} 
+                    item={item}
+                    isEditing = {editingIndex === index} 
+                    onStartEdit = {() => setEditingIndex(index)}
+                    onSave = {() => setEditingIndex(null)}
+                    onChange = {(value:string) => onEdit(index, value)}/>
+                )
+            }
         </>
     )
 }
 
 type ListItemProps = {
-    item: string
+    index: number,
+    item: string,
+    isEditing: boolean,
+    onStartEdit: () => void
+    onSave: () => void
+    onChange: (value: string) => void
 }
 
-function ListItem({item}: ListItemProps) {
-    const [editMode,setEditMode] = useState<boolean>(false);
-    const [editItem, setEditItem] = useState<string>(item);
-
-    if(editMode) {
-        return (
-            <div>
-                <input id="inputEdit" value={editItem} onChange={(e) => setEditItem(e.target.value)}></input>
-                <button onClick={() => setEditMode(false)}>Save</button>
-            </div>
-        )
-    }
-
+function ListItem({ item, isEditing, onStartEdit, onSave, onChange } : ListItemProps) {
     return (
-        <div>
-            <span>{editItem}</span>
-            <button onClick={() => setEditMode(true)}>Edit</button>
+        <div >
+            { isEditing ? 
+                <>
+                    <input id="inputEdit" value={item} onChange={(e) => onChange(e.target.value)}></input>
+                    <button onClick={onSave}>Save</button>
+                </>
+            : 
+                <>
+                    <span>{item}</span>
+                    <button onClick={onStartEdit}>Edit</button>
+                </>
+            }
         </div>
     )
 }
