@@ -15,10 +15,16 @@ function TodoHome() {
         setTodos(newList);
     }
 
+    function deleteTodo(index:number) {
+        const newList = [...todos]
+        newList.splice(index, 1)
+        setTodos(newList)
+    }
+
     return (
         <>
             <TodoInput onAdd={addTodo}></TodoInput>
-            <TodoList listItems={todos} onEdit={editTodo}></TodoList>
+            <TodoList listItems={todos} onEdit={editTodo} onDelete={deleteTodo}></TodoList>
         </>
     )
 }
