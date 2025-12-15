@@ -6,8 +6,20 @@ type TodoListProps = {
     onDelete: (index: number) => void
 }
 
+function updateSelectedItems(index: number, list: number[]) {
+    if (list.includes(index)) {
+        list.splice(list.indexOf(index), 1)
+    } else {
+        list.push(index)
+    }
+
+    return list;
+}
+
 function TodoList({ listItems, onEdit, onDelete }: TodoListProps) {
     const [editingIndex, setEditingIndex] = useState<number | null>(null);
+    const [selectedItems, setSelectedItems] = useState<number[]>([]);
+
     return(
         <>
             <p>List of items: </p>
@@ -19,7 +31,9 @@ function TodoList({ listItems, onEdit, onDelete }: TodoListProps) {
                     onStartEdit = {() => setEditingIndex(index)}
                     onSave = {() => setEditingIndex(null)}
                     onChange = {(value:string) => onEdit(index, value)}
-                    onDelete = {() => onDelete(index)}/>
+                    onDelete = {() => onDelete(index)} 
+                    selected = {selectedItems.includes(index)}
+                    onSelect = {() => setSelectedItems(updateSelectedItems(index, [...selectedItems]))} />
                 )
             }
         </>
@@ -30,15 +44,17 @@ type ListItemProps = {
     index: number,
     item: string,
     isEditing: boolean,
-    onStartEdit: () => void
-    onSave: () => void
-    onChange: (value: string) => void
-    onDelete: () => void
+    onStartEdit: () => void,
+    onSave: () => void,
+    onChange: (value: string) => void,
+    onDelete: () => void,
+    selected: boolean,
+    onSelect: () => void
 }
 
-function ListItem({ item, isEditing, onStartEdit, onSave, onChange, onDelete } : ListItemProps) {
+function ListItem({ item, isEditing, onStartEdit, onSave, onChange, onDelete, selected, onSelect } : ListItemProps) {
     return (
-        <div >
+        <div>
             { isEditing ? 
                 <>
                     <input id="inputEdit" value={item} onChange={(e) => onChange(e.target.value)}></input>
@@ -46,9 +62,15 @@ function ListItem({ item, isEditing, onStartEdit, onSave, onChange, onDelete } :
                 </>
             : 
                 <>
-                    <span>{item}</span>
-                    <button onClick={onStartEdit}>Edit</button>
-                    <button onClick={onDelete}>Delete</button>
+                    <input type="checkbox" checked={selected} onChange={onSelect}/>
+                    { selected ? 
+                        <s>{item}</s> : 
+                        <>
+                            <span>{item}</span>
+                            <button onClick={onStartEdit}>Edit</button>
+                            <button onClick={onDelete}>Delete</button>
+                        </>
+                    }
                 </>
             }
         </div>
