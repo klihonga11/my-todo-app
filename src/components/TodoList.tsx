@@ -1,7 +1,8 @@
 import { useState } from "react";
+import type { TodoItem } from "./types/TodoItem";
 
 type TodoListProps = {
-    listItems: string[]
+    listItems: TodoItem[]
     onEdit: (index: number, item: string) => void
     onDelete: (index: number) => void
 }
@@ -42,7 +43,7 @@ function TodoList({ listItems, onEdit, onDelete }: TodoListProps) {
 
 type ListItemProps = {
     index: number,
-    item: string,
+    item: TodoItem,
     isEditing: boolean,
     onStartEdit: () => void,
     onSave: () => void,
@@ -57,16 +58,16 @@ function ListItem({ item, isEditing, onStartEdit, onSave, onChange, onDelete, se
         <div>
             { isEditing ? 
                 <>
-                    <input id="inputEdit" value={item} onChange={(e) => onChange(e.target.value)}></input>
+                    <input id="inputEdit" value={item.text} onChange={(e) => onChange(e.target.value)}></input>
                     <button onClick={onSave}>Save</button>
                 </>
             : 
                 <>
                     <input type="checkbox" checked={selected} onChange={onSelect}/>
                     { selected ? 
-                        <s>{item}</s> : 
+                        <s>{item.text}</s> : 
                         <>
-                            <span>{item}</span>
+                            <span>{item.text}</span>
                             <button onClick={onStartEdit}>Edit</button>
                             <button onClick={onDelete}>Delete</button>
                         </>
