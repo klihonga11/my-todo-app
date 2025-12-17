@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import TodoInput from "./TodoInput";
 import TodoList from "./TodoList";
 import Filter from "./Filter";
@@ -6,9 +6,11 @@ import type { TodoItem } from "./types/TodoItem";
 
 function TodoHome() {
     const [todos, setTodos] = useState<TodoItem[]>([]);
+    const idCounter = useRef(0);
 
     function addTodo(item:string) {
-        setTodos([...todos, { text: item, selected: false }]);
+        setTodos([...todos, { id: idCounter.current, text: item, selected: false }]);
+        idCounter.current++;
     }
 
     function editTodo(index: number, item:string) {
