@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import TodoInput from "./TodoInput";
 import TodoList from "./TodoList";
-import Filter from "./Filter";
 import type { TodoItem } from "./types/TodoItem";
 
 function TodoHome() {
@@ -27,11 +26,18 @@ function TodoHome() {
         setTodos(newList)
     }
 
+    function selectTodo(index: number) {
+        const newList = [...todos];
+        const itemAtIndex = newList[index];
+        itemAtIndex.selected = !itemAtIndex.selected
+        newList[index] = itemAtIndex;
+        setTodos(newList); 
+    }
+
     return (
         <>
-            <Filter></Filter>
             <TodoInput onAdd={addTodo}></TodoInput>
-            <TodoList listItems={todos} onEdit={editTodo} onDelete={deleteTodo}></TodoList>
+            <TodoList listItems={todos} onEdit={editTodo} onDelete={deleteTodo} ></TodoList>
         </>
     )
 }
