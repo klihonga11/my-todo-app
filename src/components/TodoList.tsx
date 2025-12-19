@@ -5,22 +5,11 @@ type TodoListProps = {
     listItems: TodoItem[]
     onEdit: (index: number, item: string) => void
     onDelete: (index: number) => void
+    onSelect: (index: number) => void
 }
 
-function updateSelectedItems(todoItem: TodoItem, list: TodoItem[]) {
-    const isItemSelected = list.some(item => item.id === todoItem.id);
-
-    if (isItemSelected) {
-        return list.filter(item => item.id !== todoItem.id);
-    }
-    
-    list.push(todoItem);
-    return list;
-}
-
-function TodoList({ listItems, onEdit, onDelete }: TodoListProps) {
+function TodoList({ listItems, onEdit, onDelete, onSelect }: TodoListProps) {
     const [editingIndex, setEditingIndex] = useState<number | null>(null);
-    const [selectedItems, setSelectedItems] = useState<TodoItem[]>([]);
 
     return(
         <>
@@ -33,8 +22,8 @@ function TodoList({ listItems, onEdit, onDelete }: TodoListProps) {
                     onSave = {() => setEditingIndex(null)}
                     onChange = {(value:string) => onEdit(index, value)}
                     onDelete = {() => onDelete(index)} 
-                    selected = {selectedItems.some(selectedItem => selectedItem.id === item.id)}
-                    onSelect = {() => setSelectedItems(updateSelectedItems(item, [...selectedItems]))} />
+                    selected = {item.selected}
+                    onSelect = {() => onSelect(index)} />
                 )
             }
         </>

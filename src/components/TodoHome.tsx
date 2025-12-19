@@ -37,7 +37,7 @@ function TodoHome() {
     return (
         <>
             <TodoInput onAdd={addTodo}></TodoInput>
-            <TodoList listItems={todos} onEdit={editTodo} onDelete={deleteTodo} ></TodoList>
+            <TodoList listItems={todos} onEdit={editTodo} onDelete={deleteTodo} onSelect={selectTodo}></TodoList>
         </>
     )
 }
