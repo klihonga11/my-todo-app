@@ -7,6 +7,7 @@ import Filter from "./Filter";
 function TodoHome() {
     const [todos, setTodos] = useState<TodoItem[]>([]);
     const idCounter = useRef(0);
+    const [filter, setFilter] = useState("All");
 
     function addTodo(item:string) {
         setTodos([...todos, { id: idCounter.current, text: item, selected: false }]);
@@ -34,32 +35,13 @@ function TodoHome() {
         setTodos(newList);
     }
 
-    function filterTodos(value: string) {
-        const newList = [...todos];
-        let filteredList = [];
-
-        switch(value) {
-            case "All":
-                filteredList = newList;
-                break;
-            case "Completed":
-                filteredList= newList.filter(item => item.selected === true);
-                break;
-            case "Active":
-                filteredList = newList.filter(item => item.selected === false);
-                break;
-            default:
-                filteredList = newList;
-        }
-
-        setTodos(filteredList);
-    }
+    const filteredList = filter === "All" ? todos : [...todos].filter(item => filter === "Completed" ? item.selected : !item.selected);
 
     return (
         <>
-            <Filter onChange={filterTodos}></Filter>
+            <Filter onChange={(value) => setFilter(value) }></Filter>
             <TodoInput onAdd={addTodo}></TodoInput>
-            <TodoList listItems={todos} onEdit={editTodo} onDelete={deleteTodo} onSelect={selectTodo}></TodoList>
+            <TodoList listItems={filteredList} onEdit={editTodo} onDelete={deleteTodo} onSelect={selectTodo}></TodoList>
         </>
     )
 }
