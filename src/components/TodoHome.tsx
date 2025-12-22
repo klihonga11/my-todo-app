@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import TodoInput from "./TodoInput";
 import TodoList from "./TodoList";
 import type { TodoItem } from "./types/TodoItem";
+import Filter from "./Filter";
 
 function TodoHome() {
     const [todos, setTodos] = useState<TodoItem[]>([]);
@@ -26,16 +27,37 @@ function TodoHome() {
         setTodos(newList)
     }
 
-    function selectTodo(index: number) {
+    function selectTodo(index:number) {
         const newList = [...todos];
-        const itemAtIndex = newList[index];
-        itemAtIndex.selected = !itemAtIndex.selected
-        newList[index] = itemAtIndex;
-        setTodos(newList); 
+        const itemAtSelectedIndex = newList[index];
+        newList[index].selected = !itemAtSelectedIndex.selected;
+        setTodos(newList);
+    }
+
+    function filterTodos(value: string) {
+        const newList = [...todos];
+        let filteredList = [];
+
+        switch(value) {
+            case "All":
+                filteredList = newList;
+                break;
+            case "Completed":
+                filteredList= newList.filter(item => item.selected === false);
+                break;
+            case "Active":
+                filteredList = newList.filter(item => item.selected === true);
+                break;
+            default:
+                filteredList = newList;
+        }
+
+        setTodos(filteredList);
     }
 
     return (
         <>
+            <Filter onChange={filterTodos}></Filter>
             <TodoInput onAdd={addTodo}></TodoInput>
             <TodoList listItems={todos} onEdit={editTodo} onDelete={deleteTodo} onSelect={selectTodo}></TodoList>
         </>
