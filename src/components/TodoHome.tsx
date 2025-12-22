@@ -43,10 +43,10 @@ function TodoHome() {
                 filteredList = newList;
                 break;
             case "Completed":
-                filteredList= newList.filter(item => item.selected === false);
+                filteredList= newList.filter(item => item.selected === true);
                 break;
             case "Active":
-                filteredList = newList.filter(item => item.selected === true);
+                filteredList = newList.filter(item => item.selected === false);
                 break;
             default:
                 filteredList = newList;
