@@ -1,10 +1,20 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { TodoItem } from "../components/types/TodoItem";
 
 export function useTodos() {
-    const [todos, setTodos] = useState<TodoItem[]>([]);
+    const key = "todos";
+
+    const [todos, setTodos] = useState<TodoItem[]>(() => {
+        const storedValue = localStorage.getItem(key);
+        return storedValue ? JSON.parse(storedValue) : []
+    });
+
     const idCounter = useRef(0);
     const [filter, setFilter] = useState("All");
+
+    useEffect(() => {
+        localStorage.setItem(key, JSON.stringify(todos));
+    }, [todos]);
 
     const addTodo = (item:string) => {
         setTodos([...todos, { id: idCounter.current, text: item, selected: false }]);
