@@ -17,29 +17,32 @@ export function useTodos() {
     }, [todos]);
 
     const addTodo = (item:string) => {
-        setTodos([...todos, { id: idCounter.current, text: item, selected: false }]);
+        setTodos(prev => [...prev, { id: idCounter.current, text: item, selected: false }]);
         idCounter.current++;
     }
 
-    const editTodo = (index: number, item:string) => {
-        const newList = [...todos];
-        const itemAtIndex = newList[index];
-        itemAtIndex.text = item;
-        newList[index] = itemAtIndex;
-        setTodos(newList);
+    const editTodo = (id: number, text:string) => {
+        setTodos(prev =>
+            prev.map(
+                todo => todo.id === id ? {...todo, text } : todo
+            )
+        );
     }
 
-    const deleteTodo = (index:number) => {
-        const newList = [...todos]
-        newList.splice(index, 1)
-        setTodos(newList)
+    const deleteTodo = (id:number) => {
+        setTodos(prev =>
+            prev.filter(
+                todo => todo.id !== id 
+            )
+        );
     }
 
-    const selectTodo = (index:number) => {
-        const newList = [...todos];
-        const itemAtSelectedIndex = newList[index];
-        newList[index].selected = !itemAtSelectedIndex.selected;
-        setTodos(newList);
+    const selectTodo = (id:number) => {
+        setTodos(prev =>
+            prev.map(
+                todo => todo.id === id ? {...todo, selected: !todo.selected } : todo
+            )
+        );
     }
 
     const updateFilter = (value: string) => {
