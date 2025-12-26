@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { TodoItem } from "../components/types/TodoItem";
+import type { FilterStatus } from "../components/types/FilterStatus";
 
 export function useTodos() {
     const key = "todos";
@@ -9,44 +10,45 @@ export function useTodos() {
         return storedValue ? JSON.parse(storedValue) : []
     });
 
-    const idCounter = useRef(0);
-    const [filter, setFilter] = useState("All");
+    const [filter, setFilter] = useState<FilterStatus>("All");
 
     useEffect(() => {
         localStorage.setItem(key, JSON.stringify(todos));
     }, [todos]);
 
-    const addTodo = (item:string) => {
-        setTodos([...todos, { id: idCounter.current, text: item, selected: false }]);
-        idCounter.current++;
+    const addTodo = (text:string) => {
+        setTodos(prev => [...prev, { id: crypto.randomUUID(), text, selected: false }]);
     }
 
-    const editTodo = (index: number, item:string) => {
-        const newList = [...todos];
-        const itemAtIndex = newList[index];
-        itemAtIndex.text = item;
-        newList[index] = itemAtIndex;
-        setTodos(newList);
+    const editTodo = (id: string, text:string) => {
+        setTodos(prev =>
+            prev.map(
+                todo => todo.id === id ? {...todo, text } : todo
+            )
+        );
     }
 
-    const deleteTodo = (index:number) => {
-        const newList = [...todos]
-        newList.splice(index, 1)
-        setTodos(newList)
+    const deleteTodo = (id:string) => {
+        setTodos(prev =>
+            prev.filter(
+                todo => todo.id !== id 
+            )
+        );
     }
 
-    const selectTodo = (index:number) => {
-        const newList = [...todos];
-        const itemAtSelectedIndex = newList[index];
-        newList[index].selected = !itemAtSelectedIndex.selected;
-        setTodos(newList);
+    const selectTodo = (id:string) => {
+        setTodos(prev =>
+            prev.map(
+                todo => todo.id === id ? {...todo, selected: !todo.selected } : todo
+            )
+        );
     }
 
-    const updateFilter = (value: string) => {
+    const updateFilter = (value: FilterStatus) => {
         setFilter(value);
     }
 
-    const filteredList = filter === "All" ? todos : [...todos].filter(item => filter === "Completed" ? item.selected : !item.selected);
+    const filteredList = filter === "All" ? todos : todos.filter(item => filter === "Completed" ? item.selected : !item.selected);
 
     return {
         addTodo,
