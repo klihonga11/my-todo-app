@@ -3,9 +3,9 @@ import type { TodoItem } from "./types/TodoItem";
 
 type TodoListProps = {
     listItems: TodoItem[]
-    onEdit: (index: number, item: string) => void
-    onDelete: (index: number) => void
-    onSelect: (index: number) => void
+    onEdit: (id: string, text: string) => void
+    onDelete: (id: string) => void
+    onSelect: (id: string) => void
 }
 
 function TodoList({ listItems, onEdit, onDelete, onSelect }: TodoListProps) {
@@ -20,10 +20,10 @@ function TodoList({ listItems, onEdit, onDelete, onSelect }: TodoListProps) {
                     isEditing = {editingIndex === index} 
                     onStartEdit = {() => setEditingIndex(index)}
                     onSave = {() => setEditingIndex(null)}
-                    onChange = {(value:string) => onEdit(index, value)}
-                    onDelete = {() => onDelete(index)} 
+                    onChange = {(value:string) => onEdit(item.id, value)}
+                    onDelete = {() => onDelete(item.id)} 
                     selected = {item.selected}
-                    onSelect = {() => onSelect(index)} />
+                    onSelect = {() => onSelect(item.id)} />
                 )
             }
         </>

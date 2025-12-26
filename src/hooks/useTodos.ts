@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { TodoItem } from "../components/types/TodoItem";
 
 export function useTodos() {
@@ -9,19 +9,17 @@ export function useTodos() {
         return storedValue ? JSON.parse(storedValue) : []
     });
 
-    const idCounter = useRef(0);
     const [filter, setFilter] = useState("All");
 
     useEffect(() => {
         localStorage.setItem(key, JSON.stringify(todos));
     }, [todos]);
 
-    const addTodo = (item:string) => {
-        setTodos(prev => [...prev, { id: idCounter.current, text: item, selected: false }]);
-        idCounter.current++;
+    const addTodo = (text:string) => {
+        setTodos(prev => [...prev, { id: crypto.randomUUID(), text, selected: false }]);
     }
 
-    const editTodo = (id: number, text:string) => {
+    const editTodo = (id: string, text:string) => {
         setTodos(prev =>
             prev.map(
                 todo => todo.id === id ? {...todo, text } : todo
@@ -29,7 +27,7 @@ export function useTodos() {
         );
     }
 
-    const deleteTodo = (id:number) => {
+    const deleteTodo = (id:string) => {
         setTodos(prev =>
             prev.filter(
                 todo => todo.id !== id 
@@ -37,7 +35,7 @@ export function useTodos() {
         );
     }
 
-    const selectTodo = (id:number) => {
+    const selectTodo = (id:string) => {
         setTodos(prev =>
             prev.map(
                 todo => todo.id === id ? {...todo, selected: !todo.selected } : todo
