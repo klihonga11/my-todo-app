@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { TodoItem } from "../components/types/TodoItem";
+import type { FilterStatus } from "../components/types/FilterStatus";
 
 export function useTodos() {
     const key = "todos";
@@ -9,7 +10,7 @@ export function useTodos() {
         return storedValue ? JSON.parse(storedValue) : []
     });
 
-    const [filter, setFilter] = useState("All");
+    const [filter, setFilter] = useState<FilterStatus>("All");
 
     useEffect(() => {
         localStorage.setItem(key, JSON.stringify(todos));
@@ -43,11 +44,11 @@ export function useTodos() {
         );
     }
 
-    const updateFilter = (value: string) => {
+    const updateFilter = (value: FilterStatus) => {
         setFilter(value);
     }
 
-    const filteredList = filter === "All" ? todos : [...todos].filter(item => filter === "Completed" ? item.selected : !item.selected);
+    const filteredList = filter === "All" ? todos : todos.filter(item => filter === "Completed" ? item.selected : !item.selected);
 
     return {
         addTodo,
