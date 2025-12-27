@@ -1,3 +1,4 @@
+import { Button, HStack, Input } from "@chakra-ui/react";
 import { useState } from "react";
 
 type TodoInputProps = {
@@ -15,10 +16,11 @@ function TodoInput({onAdd}: TodoInputProps) {
 
     return (
         <>
-            <form onSubmit={onSubmit} >
-                <label htmlFor="item">Item: </label>
-                <input id="item" type="text" value={todoItem} onChange={(e) => setTodoItem(e.target.value)}/>
-                <button type="submit">Add</button>
+            <form onSubmit={onSubmit}>
+                <HStack>
+                    <Input placeholder="Item" variant="subtle" id="item" type="text" value={todoItem} onChange={(e) => setTodoItem(e.target.value)}/>
+                    <Button type="submit">Add</Button>
+                </HStack>
             </form>
         </>
     )

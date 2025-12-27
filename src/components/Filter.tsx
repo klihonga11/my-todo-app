@@ -1,3 +1,4 @@
+import { NativeSelect } from "@chakra-ui/react";
 import type { FilterStatus } from "./types/FilterStatus";
 
 type FilterProps = {
@@ -7,12 +8,14 @@ type FilterProps = {
 function Filter({ onChange }: FilterProps) {
     return (
         <>
-            <label htmlFor="filterOptions">Filter: </label>
-            <select defaultValue="All" id="filterOptions" name="filterOptions" onChange={(e) => onChange(e.target.value as FilterStatus)}>
-                <option value="All">All</option>
-                <option value="Active">Active</option>
-                <option value="Completed">Completed</option>
-            </select>
+            <NativeSelect.Root variant="subtle">
+                <NativeSelect.Field defaultValue="All" onChange={(e) => onChange(e.target.value as FilterStatus)}>
+                    <option value="All">All</option>
+                    <option value="Active">Active</option>
+                    <option value="Completed">Completed</option>
+                </NativeSelect.Field>
+                <NativeSelect.Indicator />
+            </NativeSelect.Root>
         </>
     )
 }
