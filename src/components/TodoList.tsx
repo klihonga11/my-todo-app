@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { TodoItem } from "./types/TodoItem";
-import { Button, Checkbox, HStack, Input } from "@chakra-ui/react";
+import { Button, Checkbox, HStack, Input, Spacer } from "@chakra-ui/react";
 
 type TodoListProps = {
     listItems: TodoItem[]
@@ -44,7 +44,7 @@ type ListItemProps = {
 
 function ListItem({ item, isEditing, onStartEdit, onSave, onChange, onDelete, selected, onSelect } : ListItemProps) {
     return (
-        <HStack>
+        <HStack align="flex-start" w="100%">
             { isEditing ? 
                 <>
                     <Input variant="subtle" id="inputEdit" value={item.text} onChange={(e) => onChange(e.target.value)}></Input>
@@ -64,6 +64,7 @@ function ListItem({ item, isEditing, onStartEdit, onSave, onChange, onDelete, se
                         <s>{item.text}</s> : 
                         <>
                             <span>{item.text}</span>
+                            <Spacer/>
                             <Button onClick={onStartEdit}>Edit</Button>
                             <Button onClick={onDelete}>Delete</Button>
                         </>
