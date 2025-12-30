@@ -50,4 +50,24 @@ describe("useTodos", () => {
 
         expect(result.current.filteredList).toHaveLength(0);
     });
+
+    it("filters a todo list", () => {
+        const { result } = renderHook(() => useTodos());
+
+        act(() => {
+            result.current.addTodo("A");
+            result.current.addTodo("B");
+            result.current.addTodo("C");
+        });
+
+        const id = result.current.filteredList[0].id;
+
+        act(() => {
+            result.current.selectTodo(id);
+            result.current.updateFilter("Completed");
+        })
+
+        expect(result.current.filteredList).toHaveLength(1);
+        expect(result.current.filteredList[0].text).toBe("A");
+    });
 })
