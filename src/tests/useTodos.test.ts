@@ -34,4 +34,20 @@ describe("useTodos", () => {
 
         expect(result.current.filteredList[0].text).toBe("omega");
     });
+
+    it("deletes a todo item", () => {
+        const { result } = renderHook(() => useTodos());
+
+        act(() => {
+            result.current.addTodo("apple");
+        })
+
+        const id = result.current.filteredList[0].id;
+
+        act(() => {
+            result.current.deleteTodo(id);
+        });
+
+        expect(result.current.filteredList).toHaveLength(0);
+    });
 })
