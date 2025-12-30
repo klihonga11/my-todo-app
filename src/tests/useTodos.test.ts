@@ -18,4 +18,20 @@ describe("useTodos", () => {
         expect(result.current.filteredList).toHaveLength(1);
         expect(result.current.filteredList[0].text).toBe("gamma");
     });
+
+    it("edits a todo item", () => {
+        const { result } = renderHook(() => useTodos());
+
+        act(() => {
+            result.current.addTodo("alpha");
+        });
+
+        const id = result.current.filteredList[0].id;
+
+        act(() => {
+            result.current.editTodo(id, "omega");
+        })
+
+        expect(result.current.filteredList[0].text).toBe("omega");
+    });
 })
