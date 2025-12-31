@@ -7,7 +7,7 @@ export function useTodos() {
 
     const [todos, setTodos] = useState<TodoItem[]>(() => {
         const storedValue = localStorage.getItem(key);
-        return storedValue ? JSON.parse(storedValue) : []
+        return storedValue ? JSON.parse(storedValue) : [];
     });
 
     const [filter, setFilter] = useState<FilterStatus>("All");
@@ -18,7 +18,7 @@ export function useTodos() {
 
     const addTodo = (text:string) => {
         setTodos(prev => [...prev, { id: crypto.randomUUID(), text, selected: false }]);
-    }
+    };
 
     const editTodo = (id: string, text:string) => {
         setTodos(prev =>
@@ -26,7 +26,7 @@ export function useTodos() {
                 todo => todo.id === id ? {...todo, text } : todo
             )
         );
-    }
+    };
 
     const deleteTodo = (id:string) => {
         setTodos(prev =>
@@ -34,7 +34,7 @@ export function useTodos() {
                 todo => todo.id !== id 
             )
         );
-    }
+    };
 
     const selectTodo = (id:string) => {
         setTodos(prev =>
@@ -42,11 +42,11 @@ export function useTodos() {
                 todo => todo.id === id ? {...todo, selected: !todo.selected } : todo
             )
         );
-    }
+    };
 
     const updateFilter = (value: FilterStatus) => {
         setFilter(value);
-    }
+    };
 
     const filteredList = filter === "All" ? todos : todos.filter(item => filter === "Completed" ? item.selected : !item.selected);
 
@@ -57,5 +57,5 @@ export function useTodos() {
         selectTodo,
         updateFilter,
         filteredList
-    }
+    };
 }

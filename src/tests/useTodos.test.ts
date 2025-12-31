@@ -30,7 +30,7 @@ describe("useTodos", () => {
 
         act(() => {
             result.current.editTodo(id, "omega");
-        })
+        });
 
         expect(result.current.filteredList[0].text).toBe("omega");
     });
@@ -40,7 +40,7 @@ describe("useTodos", () => {
 
         act(() => {
             result.current.addTodo("apple");
-        })
+        });
 
         const id = result.current.filteredList[0].id;
 
@@ -65,9 +65,9 @@ describe("useTodos", () => {
         act(() => {
             result.current.selectTodo(id);
             result.current.updateFilter("Completed");
-        })
+        });
 
         expect(result.current.filteredList).toHaveLength(1);
         expect(result.current.filteredList[0].text).toBe("A");
     });
-})
+});

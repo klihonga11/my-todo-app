@@ -28,7 +28,7 @@ function TodoList({ listItems, onEdit, onDelete, onSelect }: TodoListProps) {
                 )
             }
         </>
-    )
+    );
 }
 
 type ListItemProps = {
@@ -72,7 +72,7 @@ function ListItem({ item, isEditing, onStartEdit, onSave, onChange, onDelete, se
                 </>
             }
         </HStack>
-    )
+    );
 }
 
 export default TodoList;
