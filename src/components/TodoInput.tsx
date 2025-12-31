@@ -23,7 +23,7 @@ function TodoInput({onAdd}: TodoInputProps) {
                 </HStack>
             </form>
         </>
-    )
+    );
 }
 
 export default TodoInput;

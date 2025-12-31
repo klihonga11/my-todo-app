@@ -19,5 +19,9 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // ✅ THIS enforces semicolons
+      semi: ["error", "always"],
+    },
   },
 ])

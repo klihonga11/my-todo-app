@@ -17,7 +17,7 @@ function Filter({ onChange }: FilterProps) {
                 <NativeSelect.Indicator />
             </NativeSelect.Root>
         </>
-    )
+    );
 }
 
 export default Filter;
